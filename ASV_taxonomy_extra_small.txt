@@ -1,0 +1,12 @@
+Zotu6747	d:Bacteria,p:Chloroflexi,c:Gitt-GS-136,o:Gitt-GS-136,f:Gitt-GS-136,g:Gitt-GS-136
+Zotu2247	d:Bacteria,p:Bacteroidota,c:Bacteroidia,o:Sphingobacteriales,f:env.OPS_17,g:env.OPS_17,s:uncultured_bacterium
+Zotu22240	d:Bacteria,p:Actinobacteriota,c:Actinobacteria,o:Streptosporangiales,f:Streptosporangiaceae,g:Thermopolyspora
+Zotu2303	d:Bacteria,p:Actinobacteriota,c:Thermoleophilia,o:Gaiellales,f:Gaiellaceae,g:Gaiella
+Zotu12508	d:Bacteria,p:Chloroflexi,c:Ktedonobacteria,o:Ktedonobacterales,f:Ktedonobacteraceae,g:uncultured,s:uncultured_Thermosporothrix
+Zotu19977	d:Bacteria,p:Planctomycetota,c:Planctomycetes,o:Pirellulales,f:Pirellulaceae,g:uncultured,s:uncultured_bacterium
+Zotu30175	d:Bacteria,p:Proteobacteria,c:Alphaproteobacteria,o:Micropepsales,f:Micropepsaceae,g:uncultured
+Zotu4618	d:Bacteria,p:Actinobacteriota,c:Actinobacteria,o:Micromonosporales,f:Micromonosporaceae,g:Dactylosporangium
+Zotu9607	d:Bacteria,p:Chloroflexi,c:TK10,o:TK10,f:TK10,g:TK10,s:uncultured_bacterium
+Zotu27764	d:Bacteria,p:Gemmatimonadota,c:Gemmatimonadetes,o:Gemmatimonadales,f:Gemmatimonadaceae,g:uncultured
+Zotu39327	d:Bacteria,p:Patescibacteria,c:Parcubacteria,o:Candidatus_Kaiserbacteria,f:Candidatus_Kaiserbacteria,g:Candidatus_Kaiserbacteria,s:uncultured_bacterium
+Zotu11302	d:Bacteria,p:Verrucomicrobiota,c:Verrucomicrobiae,o:Chthoniobacterales,f:Chthoniobacteraceae,g:Candidatus_Udaeobacter
