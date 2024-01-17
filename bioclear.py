@@ -3,12 +3,13 @@ taxonomy_levels = dict(
 
 
 class Node():
-    def __init__(self, name, zotu=None, tax_level=None, counts={}):  # counts is dict van sample en percentage
+    def __init__(self, name, zotu=None, tax_level=None, counts={}):
         self.name = name
         self.level = tax_level
         self.children = []
         self.parent = None
         self.zotus = []
+        self.counts = counts
 
     def add_child(self, child):
         self.children.append(child)
@@ -22,8 +23,6 @@ class Node():
 
 
 class SampleCounts():
-    '''data class to store sample counts for taxonomic levels'''
-
     def __init__(self, sample):
         self.sample = sample
         self.counts = dict()
@@ -45,7 +44,6 @@ class Tree():
                 self.add_lineage_str(line.strip())
 
     def add_lineage_str(self, lineage_str):
-        # Zotu1	d:Bacteria,p:Actinobacteriota,c:Actinobacteria,o:Micrococcales,f:Micrococcaceae
         zotu, lineage = lineage_str.split("\t")
         lineage = lineage.split(",")
         parent = self.root
@@ -62,23 +60,20 @@ class Tree():
                 self.nodes[name] = node
             else:
                 parent = self.nodes[name]
-        # last node gets zotu annotated
+
+        # Last node gets Zotu annotated
         self.nodes[name].zotus.append(zotu)
 
-    def get_counts(self, tax_level, samples):
-        # iterate tree
-        # find nodes with correct level
-        counts = list()
-        for sample in samples:
-            counts.append(SampleCounts(sample))
-        # print(counts)
-        # return counts
-        for node in self.nodes:
-            if node.level == tax_level:
-                # fetch counts for requested samples
-                for sample in samples:
-                    if sample in node.counts:
-                        counts[sample] = node.counts[sample]
+        # Add Zotu to Zotus dictionary
+        if zotu not in self.zotus:
+            self.zotus[zotu] = self.nodes[name]
+
+    def add_counts_to_node(self, node_name, sample, count):
+        if node_name in self.nodes:
+            if sample not in self.nodes[node_name].counts:
+                self.nodes[node_name].counts[sample] = count
+            else:
+                self.nodes[node_name].counts[sample] += count
 
     def __repr__(self):
         return f"Tree: {''.join([n.__repr__() for n in self.nodes.values()])}"
