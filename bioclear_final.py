@@ -112,11 +112,6 @@ fig = go.Figure(go.Treemap(
 ))
 
 fig.update_layout(margin=dict(t=50, l=25, r=25, b=25))
-fig.show()
-
-gridspec = pn.GridSpec(sizing_mode='stretch_both', min_height=600)
-gridspec[1:3,1:3] = fig
-gridspec
 
 blast_results = pd.read_csv("/Users/cheyennebrouwer/Documents/23-24/Kwartaal_2/Data_Dashboards/Bioclear/wetransfer_ngs-data_2023-11-14_1231/NGS data/blast_results.txt", sep=",", header=0)
 # print(blast_results)
@@ -158,6 +153,21 @@ layout = pn.Column(
     search_bar_data,
     display_table
 )
+#
+# # Serve the app
+# layout.show()
 
-# Serve the app
-pn.serve(layout)
+# gridspec = pn.GridSpec(sizing_mode='stretch_both', max_height=600)
+# gridspec[1:3, 1:3] = fig
+
+# make multiple pages
+page1_content = pn.Row("## Page 1", fig)
+page2_content = pn.Row("## Page 2")
+tabs = pn.Tabs(("Tree", page1_content), ("Chart", page2_content))
+
+# place it in a dashboard
+dashboard = pn.template.BootstrapTemplate(title='Bioclear Earth', theme='default')
+dashboard.main.append(tabs)
+dashboard.show()
+
+
