@@ -16,19 +16,44 @@ from bokeh.palettes import Category20c
 # pnextension
 pn.extension()
 
+homepage_text = pn.widgets.StaticText(name="Home Page",
+                                      value="This project was made with data obtained from Bioclear Earth. This data is"
+                                            "represented on the website as a couple of things. The first tab, called "
+                                            "Tree, contains a taxonomic tree. This is made in a tree plot, which is"
+                                            " clickable and colourcoded on the amount of counts. On the third page, "
+                                            "Charts, there are multiple plots. These range fom a search bar that gives "
+                                            "information about the zotu that you look for, to an alignment plot and a"
+                                            " plot that shows the distribution of different variables per sample. "
+                                            "If a sample is required, fill in a sample with a coding that looks like"
+                                            "this: Example: S002P8292. If a query id is requested, a zotu with a number"
+                                            " ranging from 1 to 44000 can be entered. Example: Zotu44")
+
+Reference_page = pn.widgets.StaticText(name="References",
+                                       value="The data that is used for the plots on this website was obtained from"
+                                             " Bioclear Earth. Website: https://bioclearearth.nl/")
+
 # load in the data
-taxonomy_data = "/Users/cheyennebrouwer/Documents/23-24/Kwartaal_2/Data_Dashboards/Bioclear_earth/ASV_taxonomy_small.txt"
-df_taxonomy = pd.read_table(taxonomy_data, sep="	", header=None, index_col=0)
+taxonomy_data = "/Users/cheyennebrouwer/Documents/23-24/Kwartaal_2/Data_Dashboards/Bioclear_earth/" \
+                "ASV_taxonomy_small.txt"
+df_taxonomy = pd.read_table(taxonomy_data,
+                            sep="	",
+                            header=None,
+                            index_col=0)
 
 counts_file = "/Users/cheyennebrouwer/Documents/23-24/Kwartaal_2/Data_Dashboards/Bioclear_earth/ASV_counts_small.txt"
-df_counts = pd.read_table(counts_file, delimiter='\t', index_col=0)
+df_counts = pd.read_table(counts_file,
+                          delimiter='\t',
+                          index_col=0)
 
-mapping = "/Users/cheyennebrouwer/Documents/23-24/Kwartaal_2/Data_Dashboards/Bioclear/wetransfer_ngs-data_2023-11-14_1231/Mapping.txt"
-mapping_df = pd.read_table(mapping, index_col=0)
+mapping = "/Users/cheyennebrouwer/Documents/23-24/Kwartaal_2/Data_Dashboards/Bioclear/" \
+          "wetransfer_ngs-data_2023-11-14_1231/Mapping.txt"
+mapping_df = pd.read_table(mapping,
+                           index_col=0)
 
 # get the counts and zotu's from the chosen sample
-columnnames = list(df_counts)
-samples = pn.widgets.MenuButton(name='Select Sample', items=columnnames[1:])
+column_names = list(df_counts)
+samples = pn.widgets.MenuButton(name='Select Sample',
+                                items=column_names[1:])
 
 
 def menu_callback(event):
@@ -52,7 +77,8 @@ zotu_count_list = sample_one[default_sample[0]].tolist()
 
 # create nodes
 taxonomy_levels = dict(
-    zip(["d", "p", "c", "o", "f", "g", "s"], ["domain", "phylum", "class", "order", "family", "genus", "species"]))
+    zip(["d", "p", "c", "o", "f", "g", "s"],
+        ["domain", "phylum", "class", "order", "family", "genus", "species"]))
 
 
 class Node():
@@ -79,7 +105,7 @@ class Node():
 
 
 class SampleCounts():
-    '''data class to store sample counts for taxonomic levels'''
+    """data class to store sample counts for taxonomic levels"""
 
     def __init__(self, sample):
         self.sample = sample
@@ -147,9 +173,6 @@ class Tree():
     def get_nodes_as_string(self):
         return [n.__repr__().replace('\n', '') for n in self.nodes.values()]
 
-    # def __repr__(self):
-    #     return f"Tree: {''.join([n.__repr__() for n in self.nodes.values()])}"
-
     def __str__(self):
         newick = self._newick(self.root)
         newick.extend(';')
@@ -162,10 +185,8 @@ class Tree():
 
 if __name__ == "__main__":
     tree = Tree()
-    tree.add_lineages_file("/Users/cheyennebrouwer/Documents/23-24/Kwartaal_2/Data_Dashboards/Bioclear_earth/ASV_taxonomy_small.txt")
-    # tree.print_nodes()
-
-# print(tree.get_nodes_as_string())
+    tree.add_lineages_file("/Users/cheyennebrouwer/Documents/23-24/Kwartaal_2/Data_Dashboards/Bioclear_earth/"
+                           "ASV_taxonomy_small.txt")
 
 my_data = tree.get_nodes_as_string()
 
@@ -177,7 +198,7 @@ with open("/Users/cheyennebrouwer/Documents/23-24/Kwartaal_2/Data_Dashboards/Bio
 with open('/Users/cheyennebrouwer/Documents/23-24/Kwartaal_2/Data_Dashboards/Bioclear_earth/output.txt', 'r') as file:
     content = file.read()
 
-# # Using eval() to convert the string back to a list (caution: potential security risk)
+# # Using eval() to convert the string back to a list
 my_data_read = eval(content)
 
 # # Display the read data
@@ -210,23 +231,24 @@ fig = go.Figure(go.Treemap(
     values=counts,
     marker=dict(
         colors=counts,
-        colorscale='blues',
+        colorscale='ylorbr',
         colorbar=dict(title='Counts')
     ),
     root_color="lightgrey"
 ))
 
 fig.update_layout(margin=dict(t=50, l=25, r=25, b=25),
-                  width=1200,
-                  height=500)
+                  width=1250,
+                  height=700)
 
-blast_results = pd.read_csv("/Users/cheyennebrouwer/Documents/23-24/Kwartaal_2/Data_Dashboards/Bioclear/wetransfer_ngs-data_2023-11-14_1231/NGS data/blast_results.txt", sep=",", header=0)
+
+blast_results = pd.read_csv("/Users/cheyennebrouwer/Documents/23-24/Kwartaal_2/Data_Dashboards/Bioclear/"
+                            "wetransfer_ngs-data_2023-11-14_1231/NGS data/blast_results.txt", sep=",", header=0)
 # print(blast_results)
 
 blast_resultsies = pd.DataFrame(blast_results)
 # print(blast_resultsies)
 blast_10 = blast_resultsies.head(11)
-print(blast_10)
 
 # Create a search bar
 search_bar_data = pn.widgets.TextInput(placeholder='Enter Query id...')
@@ -235,9 +257,9 @@ search_bar_data = pn.widgets.TextInput(placeholder='Enter Query id...')
 # Create a function to filter data based on the query id
 def filter_data(query_id):
     if query_id:
-        filtered_data = blast_resultsies[blast_resultsies['Query id'].str.contains(query_id, case=False)]
+        filtered_data = blast_resultsies[blast_resultsies['Query id'].str.contains(query_id, case=False)].head(1)
     else:
-        filtered_data = blast_resultsies
+        filtered_data = blast_resultsies.head(11)
     return filtered_data
 
 
@@ -262,11 +284,17 @@ layout = pn.Column(
 )
 
 # make multiple pages
-page1_content = pn.Row("## Page 1", samples, fig)
-page2_content = pn.Row("## Page 2", layout)
-tabs = pn.Tabs(("Tree", page1_content), ("Chart", page2_content))
+homepage_content = pn.Row(homepage_text)
+page1_content = pn.Row(samples, fig)
+page2_content = pn.Row(layout)
+page3_content = pn.Row(Reference_page)
+tabs = pn.Tabs(("Home", homepage_content),
+               ("Tree", page1_content),
+               ("Charts", page2_content),
+               ("References", page3_content))
 
 # place it in a dashboard
-dashboard = pn.template.BootstrapTemplate(title='Bioclear Earth', theme='default')
+dashboard = pn.template.BootstrapTemplate(title='Bioclear Earth')
+dashboard.header_background = '#AC3E31'
 dashboard.main.append(tabs)
 dashboard.show()
